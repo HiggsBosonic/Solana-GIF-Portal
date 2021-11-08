@@ -10,8 +10,8 @@ import './App.css';
 const TWITTER_HANDLE = '_buildspace';
 const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
 const TEST_GIFS = [
-	'https://giphy.com/clips/justin-cat-vibing-vibin-r31CDVGv8RRRbZPU6r',
-	'https://giphy.com/clips/ralph-trololo-funnt-cat-wTS2fWNVd0WPQ5REnr',
+	'https://media.giphy.com/media/jpbnoe3UIa8TU8LM13/giphy.gif',
+	'https://media.giphy.com/media/Bk2DDqB5BTKkTT2VJ2/giphy.gif',
 	'https://media.giphy.com/media/3lxD1O74siiz5FvrJs/giphy.gif',
 	'https://media.giphy.com/media/tyxovVLbfZdok/giphy.gif'
 ]
@@ -20,6 +20,7 @@ const App = () => {
 //state
 const [walletAddress, setWalletAddress] = useState(null);
 const [inputValue, setInputValue] = useState('');
+const [gifList, setGifList] = useState([]);
   //actions
   const checkIfWalletIsConnected = async () => {
     try {
@@ -83,7 +84,7 @@ const renderConnectedContainer = () => (
     <input type="text" placeholder="Enter gif link!" value={inputValue} onChange={onInputChange} />
     <button className="cta-button submit-gif-button" onClick={sendGif}>Submit</button>
     <div className="gif-grid">
-      {TEST_GIFS.map(gif => (
+      {gifList.map(gif => (
         <div className="gif-item" key={gif}>
           <img src={gif} alt={gif} />
         </div>
@@ -100,6 +101,15 @@ const renderConnectedContainer = () => (
       await checkIfWalletIsConnected();
     });
   }, []);
+
+  useEffect(() => {
+    if (walletAddress) {
+      console.log('Fetching GIF list...');
+      //call solana program here
+      //set state
+      setGifList(TEST_GIFS);
+    }
+  }, [walletAddress]);
 
   return (
     <div className="App">
